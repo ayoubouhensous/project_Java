@@ -1,0 +1,10 @@
+models\FaceDetection.class
+org\example\demo1\LoginController.class
+Utils\Utils.class
+org\example\demo1\HelloApplication.class
+models\FaceEmbedding.class
+org\example\demo1\MainController.class
+org\example\demo1\Controller.class
+module-info.class
+models\CameraService.class
+org\example\demo1\HelloController.class

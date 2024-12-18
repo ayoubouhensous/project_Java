@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo1.LoginController">
+   <left>
+      <AnchorPane id="monpane" fx:id="monpane" prefHeight="632.0" prefWidth="370.0" style="-fx-background-color: #343b82; -fx-background-radius: 0px 50px 0px 0px;" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" layoutX="70.0" layoutY="34.0" prefHeight="17.0" prefWidth="228.0" text="Bienvenue" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="33.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" layoutX="40.0" layoutY="103.0" prefHeight="37.0" prefWidth="277.0" style="-fx-background-radius: 0px 40px 0px 0px;" text="Reconnaissance Faciale" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Italic" size="19.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+            <Circle fill="#b9b9b9" layoutX="57.0" layoutY="55.0" radius="14.0" stroke="WHITE" strokeType="INSIDE">
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Circle>
+            <Label alignment="CENTER" layoutX="55.0" layoutY="588.0" prefHeight="19.0" prefWidth="256.0" text="copyright v1" textFill="#c3bfbf">
+               <font>
+                  <Font name="Dubai Bold" size="10.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+            <Line endX="129.0" layoutX="150.0" layoutY="83.0" startX="-64.0" stroke="WHITE" />
+            <ImageView fitHeight="431.0" fitWidth="380.0" layoutX="9.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/facial-recognition-collage-concept.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <AnchorPane prefHeight="517.0" prefWidth="439.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" layoutX="210.0" layoutY="63.0" prefHeight="42.0" prefWidth="298.0" text="Login">
+               <font>
+                  <Font name="Arial" size="45.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label layoutX="113.0" layoutY="289.0" text="Nom d'utilisateur">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="112.0" layoutY="345.0" prefHeight="36.0" prefWidth="218.0" text="Mot de passe">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="usernameField" layoutX="405.0" layoutY="287.0" prefHeight="37.0" prefWidth="201.0" promptText="Nom d'utilisateur" />
+            <PasswordField fx:id="passwordField" layoutX="405.0" layoutY="342.0" prefHeight="34.0" prefWidth="202.0" promptText="password" />
+            <Button layoutX="395.0" layoutY="430.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="25.0" prefWidth="95.0" style="-fx-background-color: #343b82;" text="Login" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></Button>
+            <Button layoutX="510.0" layoutY="429.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="84.0" style="-fx-background-color: #343b82;" text="Cancel" textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
