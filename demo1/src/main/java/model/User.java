@@ -10,17 +10,14 @@ public class User {
     private String lastname;
 
     private byte[] embedding; // Encodage facial sous forme de texte ou base64
-    private String status;
 
 
     public User() {}
 
-    public User(Long id, String firstname, String lastname, byte[] embedding, String status) {
-        this.id = id;
+    public User( String firstname, String lastname, byte[] embedding) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.embedding = embedding;
-        this.status = status;
     }
 
     public Long getId() {
@@ -56,13 +53,7 @@ public class User {
         this.embedding = embedding;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
 
 }

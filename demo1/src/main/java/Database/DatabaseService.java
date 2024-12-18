@@ -33,8 +33,7 @@ public class DatabaseService {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 firstname VARCHAR NOT NULL,
                 Lastname VARCHAR NOT NULL,
-                embedding BLOB NOT NULL,
-                status String NOT NULL
+                embedding BLOB NOT NULL
             )
         """;
         try (Statement stmt = conn.createStatement()) {
@@ -60,7 +59,7 @@ public class DatabaseService {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL,
-                user_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL
             )
         """;
         try (Statement stmt = conn.createStatement()) {
@@ -69,13 +68,12 @@ public class DatabaseService {
     }
 
     public void addUser(User user) {
-        String sql = "INSERT INTO users (firstname,lastname, embedding, authorized) VALUES ( ? , ? , ? , ? )";
+        String sql = "INSERT INTO users (firstname,lastname, embedding) VALUES ( ? , ? , ? )";
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getFirstname());
-            pstmt.setString(2, user.getFirstname());
+            pstmt.setString(2, user.getLastname());
             pstmt.setBytes(3, user.getEmbedding());
-            pstmt.setString(4, user.getStatus());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,7 +86,6 @@ public class DatabaseService {
             pstmt.setString(1, user.getFirstname());
             pstmt.setString(2, user.getLastname());
             pstmt.setBytes(3, user.getEmbedding());
-            pstmt.setString(4, user.getStatus());
             pstmt.setLong(5, user.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -106,7 +103,7 @@ public class DatabaseService {
         }
     }
 
-    public List<User> getAllUsers() {
+   public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
         try (Connection conn = DriverManager.getConnection(DB_URL);
@@ -114,13 +111,12 @@ public class DatabaseService {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 User user = new User(
-                        rs.getLong("id"),
                         rs.getString("firstname"),
                         rs.getString("lastname"),
-                        rs.getBytes("embedding"),
-                        rs.getString("status")
+                        rs.getBytes("embedding")
 
                 );
+                user.setId(rs.getLong("id"));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -143,35 +139,62 @@ public class DatabaseService {
         return 0;
     }
 
-
-
-    public boolean authenticate(String username, String password) {
-        String sql = "SELECT * FROM login WHERE username = ? AND password = ?";
+    public int countStatusLogs(String status) {
+        String sql = "SELECT COUNT(*) FROM access_logs WHERE status = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
+            pstmt.setString(1, status);
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next(); // Renvoie true si l'utilisateur est trouvé
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return 0;
     }
-    public void addAccessLog(AccessLog Log) {
-        String sql = "INSERT INTO access_logs  (id,username,timestamp,status) VALUES ( ? , ? , ? , ? )";
+
+
+
+
+    public int countAttemps() {
+        String sql = "SELECT COUNT(*) FROM access_logs";
         try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, Log.getId());
-            pstmt.setString(2, Log.getUserName());
-            pstmt.setTimestamp(3, Timestamp.valueOf(Log.getTimestamp()));
-            pstmt.setString(4, Log.getStatus());
-            pstmt.executeUpdate();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0;
     }
+
+
+
+
+    public  boolean isValidCredentials(String username, String password) {
+        // Remplacez cette logique par l'interrogation de la base de données
+        String query = "SELECT * FROM login WHERE username = ? AND password = ?";
+        try (Connection connection = DriverManager.getConnection(DB_URL);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            // Remplir les paramètres de la requête
+            statement.setString(1, username);
+            statement.setString(2, password);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Si un résultat est trouvé, cela signifie que les identifiants sont valides
+                return resultSet.next();  // Si une ligne existe, les identifiants sont corrects
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  // En cas d'erreur de connexion ou autre, retourner false
+        }
+    }
+
 
 
 

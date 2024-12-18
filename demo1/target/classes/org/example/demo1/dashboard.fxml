@@ -44,6 +44,16 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
+            <Button fx:id="logoutButton" layoutX="93.0" layoutY="339.0" mnemonicParsing="false" onAction="#handleLogout" prefHeight="31.0" prefWidth="105.0" style="-fx-background-color: white;" text="lougout">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="38.0" fitWidth="36.0" layoutX="39.0" layoutY="337.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/logout.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <ImageView fitHeight="69.0" fitWidth="132.0" layoutX="8.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
@@ -63,6 +73,11 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
+            <Label fx:id="totaluser" alignment="CENTER" layoutX="38.0" layoutY="60.0" prefHeight="30.0" prefWidth="105.0" text="0" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="761.0" layoutY="158.0" prefHeight="120.0" prefWidth="197.0" style="-fx-background-radius: 50px 50px 50px 50px; -fx-background-color: #343b82;">
@@ -70,6 +85,11 @@
             <Label alignment="CENTER" layoutX="5.0" layoutY="11.0" prefHeight="30.0" prefWidth="189.0" text="Total Attempt" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="totalattemp" alignment="TOP_CENTER" layoutX="48.0" layoutY="59.0" prefHeight="30.0" prefWidth="94.0" text="0" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
                </font>
             </Label>
          </children>
@@ -86,6 +106,11 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
+            <Label fx:id="echec" alignment="TOP_CENTER" layoutX="31.0" layoutY="59.0" prefHeight="35.0" prefWidth="120.0" text="0" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="420.0" layoutY="354.0" prefHeight="120.0" prefWidth="189.0" style="-fx-background-radius: 50px 50px 50px 50px; -fx-background-color: #343b82;">
@@ -93,6 +118,11 @@
             <Label alignment="CENTER" layoutX="43.0" layoutY="7.0" prefHeight="30.0" prefWidth="88.0" text="Succes" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="succes" alignment="TOP_CENTER" layoutX="36.0" layoutY="60.0" prefHeight="30.0" prefWidth="111.0" text="0" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
                </font>
             </Label>
          </children>

@@ -3,6 +3,7 @@ package org.example.demo1;
 import Database.DatabaseService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -23,10 +24,62 @@ public class DashboardController {
     @FXML
     private Button addUserButton;
 
+    @FXML
+    private Label totaluser;
+
+    @FXML
+    private Label totalattemp;
+
+    @FXML
+    private Label echec;
+
+    @FXML
+    private Label succes;
+
+    @FXML
+    private Button logoutButton;
+
     private DatabaseService databaseService;
-    private String imagePath; // pour stocker le chemin de l'image (déjà déclaré)
+    private String imagePath;
+
+    @FXML
+    public void initialize() {
+        initializeDashboardData();
+    }
+
+    public void setDatabaseService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+    }
+    public void initializeDashboardData() {
+        if (databaseService != null) {
+            try {
+                int userCount = databaseService.countUsers();
+                totaluser.setText(String.valueOf(userCount));
+
+                int AtteCount = databaseService.countAttemps();
+                totalattemp.setText(String.valueOf(AtteCount));
+
+                int AccesLog = databaseService.countStatusLogs("acces");
+                succes.setText(String.valueOf(AccesLog));
+
+                int EchecLog = databaseService.countStatusLogs("echec");
+                echec.setText(String.valueOf(EchecLog));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                totaluser.setText("Erreur");
+            }
+        }
+    }
 
 
+
+
+
+
+    public DashboardController() {
+        this.databaseService = new DatabaseService(); // Instanciez votre service
+    }
 
 
     @FXML
@@ -43,6 +96,8 @@ public class DashboardController {
             // Passer le DatabaseService au contrôleur
             AddUserDialogController controller = loader.getController();
             controller.setDatabaseService(databaseService);
+            controller.setDashboardController(this); // Passer la référence du tableau de bord
+
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Ajouter un Utilisateur");
@@ -55,29 +110,30 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
-    private void addUserToDatabase(String firstname,String lastname, String imagePath, String status) {
-        if (firstname.isEmpty() || imagePath == null) {
-            showAlert("Error", "Name and image must be provided!");
-            return;
-        }
 
+
+
+
+
+
+
+    @FXML
+    private void handleLogout() {
         try {
-            byte[] imageData = Files.readAllBytes(new File(imagePath).toPath());
-            User user = new User(null,firstname,lastname ,imageData, status);
-            databaseService.addUser(user);
-            showAlert("Success", "User added successfully!");
+            // Charger la vue de connexion
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
+            Parent root = loader.load();
+
+            // Ouvrir la nouvelle scène
+            Stage stage = (Stage) logoutButton.getScene().getWindow(); // Assurez-vous que `logoutButton` est déclaré
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.setResizable(false);
+            stage.show();
         } catch (IOException e) {
-            showAlert("Error", "Failed to upload image!");
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

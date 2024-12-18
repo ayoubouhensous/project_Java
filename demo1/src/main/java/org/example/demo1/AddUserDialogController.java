@@ -1,20 +1,23 @@
 package org.example.demo1;
 
 import Database.DatabaseService;
+import Utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.User;
+import models.FaceDetection;
+import models.FaceEmbedding;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+
 
 public class AddUserDialogController {
-
-    @FXML
-    private RadioButton authorizedRadi;
+    static { System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 
     @FXML
     private TextField firstnameid;
@@ -22,10 +25,11 @@ public class AddUserDialogController {
     private TextField lastnameid;
     @FXML
     private Button imageid;
-
-
     private String imagePath;
+    FaceEmbedding faceEmbedding = new FaceEmbedding();
+    FaceDetection faceDetection = new FaceDetection();
 
+    DashboardController dashboardController = new DashboardController();
 
 
     private DatabaseService databaseService;
@@ -35,6 +39,10 @@ public class AddUserDialogController {
     public void setDatabaseService(DatabaseService databaseService) {
         this.databaseService = databaseService;
     }
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+    }
+
     @FXML
     private void chooseImage() {
         // Ouvrir un FileChooser pour choisir une image
@@ -43,18 +51,22 @@ public class AddUserDialogController {
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             imagePath = selectedFile.getAbsolutePath();
+
         }
     }
     @FXML
     private void addUser() {
-
         String firstname = firstnameid.getText();
+        String lastname = lastnameid.getText();
+        Mat img = faceDetection.detectFace(Imgcodecs.imread(imagePath));
+        float[] embedding = faceEmbedding.calculateEmbeddings(img);
+        byte[] embeddingbyte = Utils.convertFloatArrayToByteArray(embedding);
+        databaseService.addUser(new User(firstname,lastname,embeddingbyte));
+        System.out.println("Utilisateur ajouté : " + firstname +" "+ lastname);
 
-        byte[] embedding = loadImageAsBytes(imagePath);
-
-
-        System.out.println("Utilisateur ajouté : " + firstname );
-
+        if (dashboardController != null) {
+            dashboardController.initializeDashboardData();
+        }
         closeDialog();
 
     }

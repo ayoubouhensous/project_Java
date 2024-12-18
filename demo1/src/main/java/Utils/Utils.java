@@ -8,6 +8,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayInputStream;
+import java.nio.ByteBuffer;
 
 import static org.opencv.core.CvType.CV_32F;
 
@@ -44,6 +45,18 @@ public class Utils {
 
         // Créer une Image à partir de ByteArrayInputStream
         return new Image(new ByteArrayInputStream(buffer.toArray()));
+    }
+    public static byte[] convertFloatArrayToByteArray(float[] floatArray) {
+        // Créer un ByteBuffer pour contenir les bytes du tableau float[]
+        ByteBuffer buffer = ByteBuffer.allocate(floatArray.length * Float.BYTES);
+
+        // Convertir chaque float en bytes et les ajouter au buffer
+        for (float value : floatArray) {
+            buffer.putFloat(value);
+        }
+
+        // Retourner le tableau de bytes
+        return buffer.array();
     }
 
 

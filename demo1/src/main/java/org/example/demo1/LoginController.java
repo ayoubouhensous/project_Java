@@ -1,9 +1,12 @@
 package org.example.demo1;
 
+import Database.DatabaseService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,24 +21,55 @@ public class LoginController {
     @FXML
     private TextField passwordField;
 
+
+    @FXML
+    private Button cancelButton;
+
+    private DatabaseService db = new DatabaseService();
+
+
     @FXML
     private void handleLogin() {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        boolean t =true;
-        // Ici, vous pouvez ajouter une vérification d'identifiants
-        if (t == true) {
+
+        // Vérification des identifiants
+        if (db.isValidCredentials(username, password)) {
             // Si les informations d'identification sont valides, chargez la page de la caméra
             openDashboard();
         } else {
-            // Afficher un message d'erreur ou une notification
-            System.out.println("Invalid credentials. Please try again.");
+            // Afficher un message d'erreur dans une alerte
+            showErrorAlert("Invalid credentials. Please try again.");
         }
     }
-    private boolean isValidCredentials(String username, String password) {
-        // Remplacez ceci par votre logique de vérification (ex : vérifier avec une base de données)
-        return "admin".equals(username) && "password".equals(password);
+
+
+    private void showErrorAlert(String message) {
+        // Création d'une alerte d'erreur
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Login Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
+    @FXML
+    private void outLogin() {
+        // Masquer la fenêtre actuelle (c'est-à-dire la cacher sans la fermer)
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.hide();  // Masquer la fenêtre
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     private void loadCameraPage() {
         try {
             // Chargez la vue de caméra
@@ -57,6 +91,10 @@ public class LoginController {
 
             // Passer les informations de tentatives à la Dashboard
             DashboardController dashboardController = loader.getController();
+
+            DatabaseService databaseService = new DatabaseService();
+            dashboardController.setDatabaseService(databaseService);
+            dashboardController.initializeDashboardData();
 
             // Ouvrir la nouvelle scène
             Stage stage = new Stage();

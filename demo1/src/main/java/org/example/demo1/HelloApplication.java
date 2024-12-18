@@ -13,8 +13,8 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loginPage.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
-        stage.setTitle("Login"); // Ajoutez un titre à la fenêtre
-        stage.setResizable(false); // Facultatif, pour empêcher le redimensionnement
+        stage.setTitle("Login");
+        stage.setResizable(false);
         stage.show();
 
     }
